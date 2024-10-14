@@ -1,0 +1,28 @@
+name: LDC
+
+# Schedule the workflow to run at 10 AM UTC every day
+on:
+  schedule:
+    - cron: '0 10 * * *'  # Adjust this based on your local timezone
+
+jobs:
+  submit-solution:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install LeetCode CLI
+        run: npm install -g leetcode-cli
+
+      - name: Submit LeetCode Solution
+        run: |
+          leetcode login -u ${{ secrets.LEETCODE_USERNAME }} -p ${{ secrets.LEETCODE_PASSWORD }}
+          # Path to your solution file, e.g., solution.py or solution.java
+          leetcode submit path/to/your/solution.py
